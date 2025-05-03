@@ -49,3 +49,5 @@ with col3:
 st.markdown('<div class="footer">', unsafe_allow_html=True)
 st.markdown("© 2025 Stock Prediction App. This is for educational purposes only.", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
+            
+
