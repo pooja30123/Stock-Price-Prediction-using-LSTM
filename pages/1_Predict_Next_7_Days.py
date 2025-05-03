@@ -50,7 +50,7 @@ def create_prediction_chart(historical_data, predicted_prices):
     
     # Generate dates for the next 7 days (excluding weekends)
     future_dates = []
-    date = last_date
+    date = last_date - timedelta(days=1)
     days_added = 0
     while days_added < 7:
         date = date + timedelta(days=1)

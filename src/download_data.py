@@ -36,19 +36,25 @@ def download_stock_data(symbol: str):
 
 
 
+import os
+import pandas as pd
+
 def load_historical_data(symbol: str):
     """
     Load and combine historical + recent data for the given ticker symbol.
+    Ensures columns match before combining.
     """
     try:
         hist_path = os.path.join('historical', f'{symbol}.csv')
-        recent_path = os.path.join('recent', f'{symbol}_recent.csv')  # adjust if your folder/filename is different
+        recent_path = os.path.join('recent', f'{symbol}_recent.csv')
 
         dfs = []
 
         # Load historical data
         if os.path.exists(hist_path):
             hist_df = pd.read_csv(hist_path)
+            hist_df.rename(columns=lambda x: x.strip().capitalize(), inplace=True)
+            hist_df = hist_df[['Date', 'Open', 'High', 'Low', 'Close', 'Volume']]
             hist_df['Date'] = pd.to_datetime(hist_df['Date'])
             dfs.append(hist_df)
             print(f"✅ Loaded historical data from {hist_path}")
@@ -58,6 +64,8 @@ def load_historical_data(symbol: str):
         # Load recent data
         if os.path.exists(recent_path):
             recent_df = pd.read_csv(recent_path)
+            recent_df.rename(columns=lambda x: x.strip().capitalize(), inplace=True)
+            recent_df = recent_df[['Date', 'Open', 'High', 'Low', 'Close', 'Volume']]
             recent_df['Date'] = pd.to_datetime(recent_df['Date'])
             dfs.append(recent_df)
             print(f"✅ Loaded recent data from {recent_path}")
@@ -70,7 +78,9 @@ def load_historical_data(symbol: str):
             combined_df.drop_duplicates(subset='Date', inplace=True)
             combined_df.sort_values('Date', inplace=True)
             combined_df.reset_index(drop=True, inplace=True)
-            combined_df.to_csv(f'combine_data/{symbol}_combine.csv')
+
+            os.makedirs('combine_data', exist_ok=True)
+            combined_df.to_csv(f'combine_data/{symbol}_combine.csv', index=False)
             return combined_df
         else:
             print("❌ No data files found to combine.")
