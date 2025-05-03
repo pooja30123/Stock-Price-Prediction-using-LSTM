@@ -38,18 +38,44 @@ def download_stock_data(symbol: str):
 
 def load_historical_data(symbol: str):
     """
-    Load historical data for the given ticker symbol.
+    Load and combine historical + recent data for the given ticker symbol.
     """
     try:
-        file_path = os.path.join(f'historical/{symbol}.csv')
-        if os.path.exists(file_path):
-            df = pd.read_csv(file_path)
-            df['Date'] = pd.to_datetime(df['Date'])
-            print(f"✅ Loaded historical data from {file_path}")
-            return df
+        hist_path = os.path.join('historical', f'{symbol}.csv')
+        recent_path = os.path.join('recent', f'{symbol}_recent.csv')  # adjust if your folder/filename is different
+
+        dfs = []
+
+        # Load historical data
+        if os.path.exists(hist_path):
+            hist_df = pd.read_csv(hist_path)
+            hist_df['Date'] = pd.to_datetime(hist_df['Date'])
+            dfs.append(hist_df)
+            print(f"✅ Loaded historical data from {hist_path}")
         else:
-            print(f"❌ Historical data file not found for {symbol}")
+            print(f"⚠️ Historical file not found: {hist_path}")
+
+        # Load recent data
+        if os.path.exists(recent_path):
+            recent_df = pd.read_csv(recent_path)
+            recent_df['Date'] = pd.to_datetime(recent_df['Date'])
+            dfs.append(recent_df)
+            print(f"✅ Loaded recent data from {recent_path}")
+        else:
+            print(f"⚠️ Recent file not found: {recent_path}")
+
+        # Combine and clean
+        if dfs:
+            combined_df = pd.concat(dfs)
+            combined_df.drop_duplicates(subset='Date', inplace=True)
+            combined_df.sort_values('Date', inplace=True)
+            combined_df.reset_index(drop=True, inplace=True)
+            combined_df.to_csv(f'combine_data/{symbol}_combine.csv')
+            return combined_df
+        else:
+            print("❌ No data files found to combine.")
             return None
+
     except Exception as e:
-        print(f"Error loading historical data: {str(e)}")
+        print(f"❌ Error loading or combining data: {str(e)}")
         return None
