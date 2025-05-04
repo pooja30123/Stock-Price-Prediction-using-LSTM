@@ -2,8 +2,13 @@ from datetime import datetime, date, timedelta
 import yfinance as yf
 import os
 import pandas as pd
-import os,sys
+import sys
 sys.path.append(os.path.abspath('..'))
+
+
+#---------------------------------
+# Download Stock Data
+#---------------------------------
 
 def download_stock_data(symbol: str):
     """
@@ -35,10 +40,9 @@ def download_stock_data(symbol: str):
     
 
 
-
-import os
-import pandas as pd
-
+#---------------------------------
+# Load Historical Data
+#---------------------------------
 def load_historical_data(symbol: str):
     """
     Load and combine historical + recent data for the given ticker symbol.
