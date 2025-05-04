@@ -21,7 +21,7 @@ ticker = st.session_state.get('selected_ticker', None)
 
 # Helper functions
 def get_month_name(month_num):
-    return datetime(2023, month_num, 1).strftime('%B')
+    return datetime(2024, month_num, 1).strftime('%B')
 
 def create_price_chart(df):
     """Create a simple line chart for stock price with volume as bars"""

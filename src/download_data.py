@@ -46,7 +46,7 @@ def load_historical_data(symbol: str):
     """
     try:
         hist_path = os.path.join('historical', f'{symbol}.csv')
-        recent_path = os.path.join('recent', f'{symbol}_recent.csv')
+        recent_path = os.path.join('data', f'{symbol}_clean.csv')
 
         dfs = []
 
