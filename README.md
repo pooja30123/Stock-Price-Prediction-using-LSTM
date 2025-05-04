@@ -46,10 +46,10 @@ def build_model(input_shape):
 ### 🚀 Streamlit App Preview
 
 #### 📊 Home Page
-![Home Page](assets/home.png)
+![Home Page](C:\Complete Project\Stock-Price-Prediction-using-LSTM\assert\home.png)
 
 #### 📈 Prediction Output
-![Prediction Result](assets/prediction.png)
+![Prediction Result](C:\Complete Project\Stock-Price-Prediction-using-LSTM\assert\prediction.png)
 
 ## 🗂️ Project Structure
 
