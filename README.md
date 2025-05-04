@@ -43,6 +43,13 @@ def build_model(input_shape):
 | META   | 116.26 | 10.78 | 7.55 | 0.9954   |
 | MSFT   | 69.55  | 8.34  | 6.56 | 0.9858   |
 
+### 🚀 Streamlit App Preview
+
+#### 📊 Home Page
+![Home Page](assets/home.png)
+
+#### 📈 Prediction Output
+![Prediction Result](assets/prediction.png)
 
 ## 🗂️ Project Structure
 
@@ -76,12 +83,12 @@ Stock-Price-Prediction-using-LSTM/
 ```
 
 ## Clone the repository
-git clone https://github.com/yourusername/Stock-Price-Prediction-using-LSTM.git
+git clone https://github.com/pooja30123/Stock-Price-Prediction-using-LSTM.git
 cd Stock-Price-Prediction-using-LSTM
 
 
 ## Set up environment using Conda
-git clone https://github.com/yourusername/Stock-Price-Prediction-using-LSTM.git
+git clone https://github.com/pooja30123/Stock-Price-Prediction-using-LSTM.git
 cd Stock-Price-Prediction-using-LSTM
 
 
