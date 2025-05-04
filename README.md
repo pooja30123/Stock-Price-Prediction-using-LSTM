@@ -43,13 +43,6 @@ def build_model(input_shape):
 | META   | 116.26 | 10.78 | 7.55 | 0.9954   |
 | MSFT   | 69.55  | 8.34  | 6.56 | 0.9858   |
 
-### 🚀 Streamlit App Preview
-
-#### 📊 Home Page
-![Home Page](assert\home.png)
-
-#### 📈 Prediction Output
-![Prediction Result](assert\prediction.png)
 
 ## 🗂️ Project Structure
 
