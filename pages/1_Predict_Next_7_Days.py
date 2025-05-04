@@ -1,20 +1,16 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-import plotly.graph_objects as go
-from datetime import datetime, timedelta
-import time
 from src.download_data import *
 from src.preprocess import *
 from src.predict import *
+from src.visualize import *
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+import time
+
 from tensorflow.keras.models import load_model
 
 st.set_page_config(page_title="Stock Prediction", layout="wide")
-
-# Load CSS
-def load_css():
-    with open('style.css', 'r') as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 load_css()
 
@@ -22,114 +18,6 @@ load_css()
 st.markdown("<h1 style='text-align: center'>🔮 Stock Price Prediction</h1>", unsafe_allow_html=True)
 
 ticker = st.session_state.get('selected_ticker', None)
-
-def get_recommendation(predicted_prices, last_price):
-    """Generate buy/sell/hold recommendation based on price prediction"""
-    first_day_price = predicted_prices[0]
-    seventh_day_price = predicted_prices[-1]
-    
-    # Calculate expected returns
-    long_term_return = (seventh_day_price - last_price) / last_price * 100
-    
-    # Recommendation logic
-    if long_term_return > 5:
-        return "BUY", "Strong upward trend predicted over the next week", "#dcfce7", "#166534"
-    elif long_term_return > 2:
-        return "BUY", "Moderate upward trend predicted", "#dcfce7", "#166534"
-    elif long_term_return < -5:
-        return "SELL", "Strong downward trend predicted over the next week", "#fee2e2", "#991b1b"
-    elif long_term_return < -2:
-        return "SELL", "Moderate downward trend predicted", "#fee2e2", "#991b1b"
-    else:
-        return "HOLD", "No significant price movement predicted", "#fef9c3", "#854d0e"
-
-def create_prediction_chart(historical_data, predicted_prices):
-    """Create an interactive chart with historical and predicted prices"""
-    # Get the last date from historical data
-    last_date = historical_data['Date'].iloc[-1]
-    
-    # Generate dates for the next 7 days (excluding weekends)
-    future_dates = []
-    date = last_date - timedelta(days=1)
-    days_added = 0
-    while days_added < 7:
-        date = date + timedelta(days=1)
-        if date.weekday() < 5:  # Monday to Friday
-            future_dates.append(date)
-            days_added += 1
-        
-    # Create a dataframe for the predicted prices
-    pred_df = pd.DataFrame({
-        'Date': future_dates,
-        'Predicted': predicted_prices
-    })
-    
-    # Create a figure
-    fig = go.Figure()
-    
-    # Add historical data trace
-    fig.add_trace(go.Scatter(
-        x=historical_data['Date'].iloc[-30:],  # Show last 30 days
-        y=historical_data['Close'].iloc[-30:],
-        mode='lines',
-        name='Historical Price',
-        line=dict(color='#3b82f6', width=2)
-    ))
-    
-    # Add predicted data trace
-    fig.add_trace(go.Scatter(
-        x=pred_df['Date'],
-        y=pred_df['Predicted'],
-        mode='lines+markers',
-        name='Predicted Price',
-        line=dict(color='#10b981', width=3, dash='dash'),
-        marker=dict(size=8, symbol='circle')
-    ))
-    
-    # Add hover data
-    fig.update_traces(
-        hoverinfo="text+name",
-        hovertemplate="<b>%{x|%Y-%m-%d}</b><br>$%{y:.2f}<extra></extra>"
-    )
-    
-    # Update layout
-    fig.update_layout(
-        xaxis_title="Date",
-        yaxis_title="Price (USD)",
-        hovermode="closest",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        margin=dict(l=0, r=0, t=10, b=0),
-        height=400,
-        template="plotly_white",
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
-    )
-    
-    return fig
-
-def create_prediction_table(predicted_prices):
-    """Create a table with prediction dates and prices"""
-    last_date = datetime.now()
-    future_dates = []
-    date = last_date
-    days_added = 0
-    while days_added < 7:
-        date = date + timedelta(days=1)
-        if date.weekday() < 5:  # Monday to Friday
-            future_dates.append(date.strftime('%Y-%m-%d'))
-            days_added += 1
-    
-    # Create a dataframe for the predicted prices
-    pred_df = pd.DataFrame({
-        'Date': future_dates,
-        'Predicted Price ($)': [f"${price:.2f}" for price in predicted_prices],
-        'Change (%)': [(price - predicted_prices[0]) / predicted_prices[0] * 100 if i > 0 else 0 for i, price in enumerate(predicted_prices)]
-    })
-    
-    # Format the change column
-    pred_df['Change (%)'] = pred_df['Change (%)'].apply(lambda x: f"+{x:.2f}%" if x > 0 else f"{x:.2f}%" if x < 0 else "0.00%")
-    
-    return pred_df
 
 if ticker:
     st.markdown(f"""
