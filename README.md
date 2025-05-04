@@ -32,7 +32,7 @@ def build_model(input_shape):
     return model
 
 ```
-## 📈 Example Metrics
+## 📈 Metrics
 
 | Ticker | MSE    | RMSE  | MAE  | R² Score |
 | ------ | ------ | ----- | ---- | -------- |
@@ -43,13 +43,6 @@ def build_model(input_shape):
 | META   | 116.26 | 10.78 | 7.55 | 0.9954   |
 | MSFT   | 69.55  | 8.34  | 6.56 | 0.9858   |
 
-### 🚀 Streamlit App Preview
-
-#### 📊 Home Page
-![Home Page](assert\home.png)
-
-#### 📈 Prediction Output
-![Prediction Result](assert\prediction.png)
 
 ## 🗂️ Project Structure
 
@@ -88,8 +81,8 @@ cd Stock-Price-Prediction-using-LSTM
 
 
 ## Set up environment using Conda
-git clone https://github.com/pooja30123/Stock-Price-Prediction-using-LSTM.git
-cd Stock-Price-Prediction-using-LSTM
+- conda env create -f environment.yml
+- conda activate stock-predictor
 
 
 ## Run the app
