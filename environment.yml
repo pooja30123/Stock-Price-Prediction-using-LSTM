@@ -1,7 +1,9 @@
 name: stock-predictor
+
 channels:
   - defaults
   - conda-forge
+
 dependencies:
   - python=3.10
   - pandas
@@ -15,5 +17,6 @@ dependencies:
   - seaborn
   - dvc
   - pip
+  
   - pip:
       - plotly
