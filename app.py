@@ -1,11 +1,10 @@
 import streamlit as st
+from src.visualize import load_css
+import os,sys
+
+
 
 st.set_page_config(page_title="Stock Predictor", layout="wide")
-
-# Load CSS
-def load_css():
-    with open('style.css', 'r') as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 load_css()
 
@@ -47,7 +46,7 @@ with col3:
 
 # Footer
 st.markdown('<div class="footer">', unsafe_allow_html=True)
-st.markdown("© 2025 Stock Prediction App. This is for educational purposes only.", unsafe_allow_html=True)
+st.markdown("© 2025 Stock Prediction App. This is IIITL project.", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
             
 
