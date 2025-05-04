@@ -81,8 +81,8 @@ cd Stock-Price-Prediction-using-LSTM
 
 
 ## Set up environment using Conda
-conda env create -f environment.yml
-conda activate stock-predictor
+- conda env create -f environment.yml
+- conda activate stock-predictor
 
 
 ## Run the app
