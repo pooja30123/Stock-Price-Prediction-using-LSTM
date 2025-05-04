@@ -32,7 +32,7 @@ def build_model(input_shape):
     return model
 
 ```
-## 📈 Example Metrics
+## 📈 Metrics
 
 | Ticker | MSE    | RMSE  | MAE  | R² Score |
 | ------ | ------ | ----- | ---- | -------- |
