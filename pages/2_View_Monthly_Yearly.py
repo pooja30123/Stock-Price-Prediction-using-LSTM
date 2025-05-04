@@ -1,16 +1,10 @@
 import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
-import numpy as np
 from src.download_data import load_historical_data
-from datetime import datetime
+from src.visualize import *
+
+
 
 st.set_page_config(page_title="Historical Stock Data", layout="wide")
-
-# Load CSS
-def load_css():
-    with open('style.css', 'r') as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 load_css()
 
@@ -23,100 +17,6 @@ ticker = st.session_state.get('selected_ticker', None)
 def get_month_name(month_num):
     return datetime(2024, month_num, 1).strftime('%B')
 
-def create_price_chart(df):
-    """Create a simple line chart for stock price with volume as bars"""
-    # Create figure
-    fig = go.Figure()
-    
-    # Add price line
-    fig.add_trace(
-        go.Scatter(
-            x=df['Date'],
-            y=df['Close'],
-            mode='lines',
-            name="Price",
-            line=dict(color='#3b82f6', width=2)
-        )
-    )
-    
-    # Add moving averages
-    df['MA5'] = df['Close'].rolling(window=5).mean()
-    df['MA20'] = df['Close'].rolling(window=20).mean()
-    
-    fig.add_trace(
-        go.Scatter(
-            x=df['Date'],
-            y=df['MA5'],
-            mode='lines',
-            name="5-day MA",
-            line=dict(color='#f59e0b', width=2, dash='dot')
-        )
-    )
-    
-    fig.add_trace(
-        go.Scatter(
-            x=df['Date'],
-            y=df['MA20'],
-            mode='lines',
-            name="20-day MA",
-            line=dict(color='#ef4444', width=2, dash='dot')
-        )
-    )
-    
-    # Update layout
-    fig.update_layout(
-        xaxis_title="Date",
-        yaxis_title="Price (USD)",
-        hovermode="x unified",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        margin=dict(l=0, r=0, t=10, b=0),
-        height=400,
-        template="plotly_white",
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
-    )
-    
-    # Add range selector
-    fig.update_layout(
-        xaxis=dict(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=7, label="1w", step="day", stepmode="backward"),
-                    dict(count=1, label="1m", step="month", stepmode="backward"),
-                    dict(count=3, label="3m", step="month", stepmode="backward"),
-                    dict(step="all")
-                ]),
-                bgcolor="#e2e8f0",
-                activecolor="#3b82f6"
-            ),
-            type="date"
-        )
-    )
-    
-    return fig
-
-def calculate_stats(df):
-    """Calculate key statistics for the selected period"""
-    first_price = df['Open'].iloc[0]
-    last_price = df['Close'].iloc[-1]
-    highest_price = df['High'].max()
-    lowest_price = df['Low'].min()
-    avg_price = df['Close'].mean()
-    price_change = last_price - first_price
-    price_change_pct = (price_change / first_price) * 100
-    daily_returns = df['Close'].pct_change().dropna()
-    volatility = daily_returns.std() * 100  # Daily volatility
-    
-    return {
-        'first_price': first_price,
-        'last_price': last_price,
-        'highest_price': highest_price,
-        'lowest_price': lowest_price,
-        'avg_price': avg_price,
-        'price_change': price_change,
-        'price_change_pct': price_change_pct,
-        'volatility': volatility
-    }
 
 if ticker:
     st.markdown(f"""
