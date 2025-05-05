@@ -57,8 +57,7 @@ if ticker:
             historical_df['Date'] = pd.to_datetime(historical_df['Date'])
             progress_bar.progress(70)
             
-            all_data = pd.concat([historical_df, recent_df])
-            all_data = all_data.drop_duplicates(subset='Date').sort_values('Date').reset_index(drop=True)
+            all_data = historical_df
             
             # Prepare data for model
             x_input, scaler, _ = prepare_data_for_single_feature_model(all_data)
