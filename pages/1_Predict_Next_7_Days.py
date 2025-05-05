@@ -2,6 +2,7 @@ from src.download_data import *
 from src.preprocess import *
 from src.predict import *
 from src.visualize import *
+from src.file_handling import *
 
 import streamlit as st
 import pandas as pd
@@ -35,6 +36,9 @@ if ticker:
             progress_bar.progress(10)
             time.sleep(0.5)
             
+            # Delete Existing Files 
+            cleanup_old_ticker_files(ticker)
+
             # Download and preprocess data
             data_path = download_stock_data(ticker)
             progress_bar.progress(30)
