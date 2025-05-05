@@ -87,7 +87,7 @@ def create_prediction_chart(historical_data, predicted_prices):
 
 def create_prediction_table(predicted_prices):
     """Create a table with prediction dates and prices"""
-    last_date = datetime.now()
+    last_date = datetime.now()-timedelta(days=1)
     future_dates = []
     date = last_date
     days_added = 0
