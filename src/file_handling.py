@@ -1,5 +1,9 @@
 import os
 
+
+#-----------------------------------------
+# Clean Old Ticker Files
+#-----------------------------------------
 def cleanup_old_ticker_files(ticker: str, data_folder='data', combine_folder='combine_data'):
     try:
         files_to_delete = [
