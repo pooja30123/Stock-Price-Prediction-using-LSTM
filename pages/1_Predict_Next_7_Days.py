@@ -36,18 +36,21 @@ if ticker:
             progress_bar.progress(10)
             time.sleep(0.5)
             
-            # Delete Existing Files 
-            cleanup_old_ticker_files(ticker)
-
-            # Download and preprocess data
-            data_path = download_stock_data(ticker)
-            progress_bar.progress(30)
-            time.sleep(0.5)
+            if should_download(ticker):
+                # Delete Existing Files 
+                cleanup_old_ticker_files(ticker)
+                # Download and preprocess data
+                data_path = download_stock_data(ticker)
+                progress_bar.progress(30)
+                time.sleep(0.5)
             
-            recent_path = preprocess_data(data_path, ticker)
-            progress_bar.progress(50)
-            time.sleep(0.5)
-            
+                recent_path = preprocess_data(data_path, ticker)
+                progress_bar.progress(50)
+                time.sleep(0.5)
+            else:
+                print("⏳ Skipping download.")
+                recent_path = f"data/{ticker}_clean.csv"
+               
             recent_df = pd.read_csv(recent_path)
             progress_bar.progress(60)
             
@@ -99,7 +102,7 @@ if ticker:
                                 <h3 style="text-align: center;">Recommendation</h3>
                                 <div style="background-color: {bg_color}; color: {text_color}; padding: 20px; border-radius: 8px; text-align: center; margin-top: 20px;">
                                     <h1 style="font-size: 2.2rem; margin-bottom: 10px;">{rec}</h1>
-                                    <p>{reason}</p>
+                                    <p style="color:{text_color}">{reason}</p>
                                 </div>
                                 <div style="margin-top: 20px;">
                                     <p><strong>Last Price:</strong> ${last_price:.2f}</p>
@@ -109,6 +112,7 @@ if ticker:
                             </div>
                             """, unsafe_allow_html=True)
                         
+
                         # Show chart in the right column
                         with chart_col:
                             st.markdown('<div class="card">', unsafe_allow_html=True)
@@ -148,9 +152,9 @@ else:
 # Add a navigation menu
 st.sidebar.markdown("### Navigation")
 if st.sidebar.button("🏠 Home"):
-    st.switch_page("streamlit_app.py")
+    st.switch_page("app.py")
 if st.sidebar.button("📊 Historical Data"):
-    st.switch_page("pages/2_View_Historical_Data.py")
+    st.switch_page("pages/2_View_Monthly_Yearly.py")
 
 # Footer
 st.markdown('<div class="footer">', unsafe_allow_html=True)
