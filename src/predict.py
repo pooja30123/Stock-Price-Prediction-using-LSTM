@@ -15,9 +15,9 @@ def get_recommendation(predicted_prices, last_price):
     
     # Recommendation logic
     if long_term_return > 5:
-        return "BUY", "Strong upward trend predicted over the next week", "#dcfce7", "#166534"
+        return "BUY", "Strong upward trend predicted over the next week", "#166534", "#166534"
     elif long_term_return > 2:
-        return "BUY", "Moderate upward trend predicted", "#dcfce7", "#166534"
+        return "BUY", "Moderate upward trend predicted", "#166534", "#166534"
     elif long_term_return < -5:
         return "SELL", "Strong downward trend predicted over the next week", "#fee2e2", "#991b1b"
     elif long_term_return < -2:
