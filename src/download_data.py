@@ -6,6 +6,42 @@ import sys
 sys.path.append(os.path.abspath('..'))
 
 
+
+#---------------------------------
+# Should Download Stock Data
+#---------------------------------
+
+def should_download(ticker):
+    """Check if new data is needed for the ticker"""
+    file_path = os.path.join(f"data/{ticker}_clean.csv")
+
+    if os.path.exists(file_path):
+        try:
+            df = pd.read_csv(file_path)
+            df['Date'] = pd.to_datetime(df['Date'])
+            last_date = df['Date'].max().date()
+            today = datetime.today().date()-timedelta(days=1)
+
+            # If latest date is today, no need to download
+            if last_date == today:
+                print(f"✅ Data is already up to date for {ticker} (last date: {last_date})")
+                return False
+            else:
+                print(f"🔁 Data is outdated for {ticker} (last date: {last_date})")
+                os.remove(file_path)  # Delete outdated file
+                return True
+
+        except Exception as e:
+            print(f"⚠️ Error reading {file_path}: {e}")
+            os.remove(file_path)  # Remove corrupted file
+            return True
+    else:
+        # No file exists — we need to download
+        return True
+
+
+
+
 #---------------------------------
 # Download Stock Data
 #---------------------------------
